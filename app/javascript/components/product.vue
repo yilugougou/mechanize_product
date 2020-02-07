@@ -1,18 +1,6 @@
 <template>
   <div id="app">
-    <div class="navbar">
-      <div class="navbar-left">
-        <slot name="left">
-          <a class="btn-back" href="javascript:;">
-            <i class="iconfont icon-back"></i>
-          </a>
-        </slot>
-      </div>
-      <h3 class="navbar-title">产品信息修改</h3>
-      <div class="navbar-right">
-        <slot name="right"></slot>
-      </div>
-    </div>
+    <Navbar :title="ntitle"></Navbar>
     <div id="container">
       <van-field v-model="title" type="textarea" rows="2" cols="3" placeholder="请输入用户名" label="标题"/>
       <div class="van-cell van-field" v-for="(color, index) in product_color" :id="'productColor_' + index">
@@ -53,9 +41,11 @@
 </template>
 
 <script>
+    import Navbar from '../components/navbar.vue'
     export default {
         data: function () {
             return {
+                ntitle: "产品信息修改",
                 title: "万圣节儿童服装化装舞会演出服高贵王子衣服国王装披风B-0057批发",
                 product_color: [{name: "黄色"}, {name: "蓝色"}],
                 size_infos: [
@@ -73,6 +63,9 @@
                     {name: "建议零售价", value: "¥90.00"}
                 ]
             }
+        },
+        components: {
+            Navbar
         },
         created() {
             console.log("This is product info page.")
@@ -147,36 +140,5 @@
   .size-info td input {
     width: 90%;
   }
-  .navbar-title {
-    max-width: 60%;
-    font-size: 16px;
-    text-align: center;
-    margin: 0 auto;
-  }
 
-  .navbar-left,
-  .navbar-right {
-    position: absolute;
-    top: 0;
-    font-size: 16px;
-  }
-
-  .navbar-right {
-    right: 0;
-  }
-
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 50px;
-    background-color: #fff;
-    box-sizing: border-box;
-    z-index: 9;
-    line-height: 50px;
-    border-bottom: 1px solid #E5E5E5;
-  }
-</style>``
+</style>
