@@ -1,0 +1,17 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: root
+  password: root
+  socket: /var/run/mysqld/mysqld.sock
+
+development:
+  <<: *default
+  database: mechanize_db
+test:
+  <<: *default
+  database: mechanize_db
+production:
+  <<: *default
+  database: mechanize_db

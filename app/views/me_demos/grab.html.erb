@@ -1,0 +1,21 @@
+<h3>标题：</h3>
+<%= @title %>
+<h3>颜色：</h3>
+<% @product_color.each do |color| %>
+  <p><%= color %></p>
+<% end %>
+<h3>尺码：</h3>
+<% @size_infos.each do |size| %>
+  <table>
+    <tr>
+      <td><%= size[:name] %></td>
+      <td><%= size[:price] %></td>
+      <td><%= size[:count] %></td>
+    </tr>
+  </table>
+<% end %>
+<h3>描述信息</h3>
+<%= raw(@product_info) %>
+<%#= raw(@response.body.split('offer_details={"content":"')[1].gsub('"};', '').to_yaml) %>
+
+<%= link_to 'Back', me_demos_path %>

@@ -1,0 +1,2 @@
+class MeDemo < ApplicationRecord
+end
