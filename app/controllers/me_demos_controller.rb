@@ -19,44 +19,10 @@ class MeDemosController < ApplicationController
   end
 
   def grab
-    url = "https://detail.1688.com/offer/36054648174.html?spm=a2615.7691456.0.0.d3059e2TmvMaz"
-    @response = HTTParty.get(url)
-    # binding.pry
+    require 'product'
+    products = Product.new.fetch_start()
 
-    # url = "https://login.taobao.com/member/login.jhtml?style=b2b&css_style=b2b&from=b2b&newMini2=true&full_redirect=true&redirect_url=https%3A%2F%2Flogin.1688.com%2Fmember%2Fjump.htm%3Ftarget%3Dhttps%253A%252F%252Flogin.1688.com%252Fmember%252FmarketSigninJump.htm%253FDone%253Dhttp%25253A%25252F%25252Fdetail.1688.com%25252Foffer%25252F36054648174.html%25253Fspm%25253Da2615.7691456.0.0.d3059e2TmvMaz&reg=http%3A%2F%2Fmember.1688.com%2Fmember%2Fjoin%2Fenterprise_join.htm%3Flead%3Dhttp%253A%252F%252Fdetail.1688.com%252Foffer%252F36054648174.html%253Fspm%253Da2615.7691456.0.0.d3059e2TmvMaz%26leadUrl%3Dhttp%253A%252F%252Fdetail.1688.com%252Foffer%252F36054648174.html%253Fspm%253Da2615.7691456.0.0.d3059e2TmvMaz%26tracelog%3Dnotracelog_s_reg"
-    require 'mechanize'
-    Mechanize.start do |agent|
-      agent.get(url) do |page|
-        binding.pry
-        @title = page.search('#mod-detail-title .d-title').text.strip
-        @product_color = []
-        page.search('.obj-leading .obj-content li').each do |color|
-          @product_color.push(color.text.strip)
-        end
-        @size_infos = []
-        page.search('.obj-sku .obj-content .table-sku tr').each do |size_info|
-          @size_infos.push({
-            name: size_info.search('.name').text.strip,
-            price: size_info.search('.price').text.strip,
-            count: size_info.search('.count').text.strip
-          })
-        end
-        @product_info = ""
-        page.search('#mod-detail-attributes .obj-content tr').each do |info_tr|
-          info_tr.search('td').each_with_index do |td, index|
-            if td.text.strip.present?
-              if index%2 == 0
-                @product_info += "#{td.text.strip}："
-              else
-                @product_info += "#{td.text.strip}   "
-              end
-            end
-          end
-        end
-      end
-    end
-    render json: { title: @title, product_color: @product_color, size_infos: @size_infos, product_info: @product_info }
-    #@response = HTTParty.get(detailUrl)
+    render json: { title: products[:title], product_color: products[:pcolor], size_infos: products[:psizes], product_info: products[:pinfos] }
   end
 
   # GET /me_demos/1/edit
