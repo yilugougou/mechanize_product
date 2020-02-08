@@ -3,7 +3,7 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require("@rails/ujs").start()
+// require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
@@ -21,7 +21,9 @@ import 'vant/lib/index.css'
 const images = require.context('../images', true)
 const imagePath = (name) => images(name, true)
 
+const baseUrl = "http://127.0.0.1:3000/"
 Vue.prototype.$ajax = axios
+Vue.prototype.$host = baseUrl
 Vue.use(vant)
 
 document.addEventListener('DOMContentLoaded', () => {

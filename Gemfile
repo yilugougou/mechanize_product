@@ -56,3 +56,7 @@ gem 'pry'
 gem 'httparty'
 gem 'nokogiri'
 gem 'webpacker'
+gem 'mechanize'
+
+gem 'execjs'
+gem "therubyracer"

@@ -1,6 +1,18 @@
-<h1>Editing Me Demo</h1>
+<%= javascript_pack_tag 'application' %>
+<div>
+  <div style="text-align: center;">
+    <h4>产品信息修改</h4>
+  </div>
 
-<%= render 'form', me_demo: @me_demo %>
-
-<%= link_to 'Show', @me_demo %> |
-<%= link_to 'Back', me_demos_path %>
+  <div class="top-button">
+    <%= link_to '返回', me_demos_path %>
+  </div>
+</div>
+<style>
+  .top-button {
+    position: absolute;
+    top: 24px;
+    z-index: 1;
+    right: 10px;
+  }
+</style>
