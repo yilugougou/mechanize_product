@@ -60,3 +60,4 @@ gem 'mechanize'
 
 gem 'execjs'
 gem "therubyracer"
+gem 'jquery-rails'

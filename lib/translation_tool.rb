@@ -85,7 +85,7 @@ class TranslationTool
       # sleep(1)
     end
     t.join
-    result.split('||')
+    result.split("|")
   end
 
   def start_bing(query)

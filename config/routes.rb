@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :translates do
+    collection do
+      get :get_translate
+    end
+  end
   resources :me_demos do
     collection do
       get :grab
