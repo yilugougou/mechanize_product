@@ -1,114 +1,68 @@
 <div class="translation">
   <h3>Google批量翻译</h3>
   <div class="translate-content">
-    <textarea rows="5" cols="50" placeholder="请输入需要翻译的内容"></textarea>
+    <% if params[:q].present? %>
+      <% params[:q].split("✚").each do |q| %>
+        <textarea rows="5" cols="50" placeholder="请输入需要翻译的内容"><%= q %></textarea>
+      <% end %>
+    <% else %>
+      <textarea rows="5" cols="50" placeholder="请输入需要翻译的内容"></textarea>
+    <% end %>
   </div>
   <div style="margin-bottom: 50px;">
-    <button  onclick="addTranslate()">新增内容</button>
+    <button onclick="addTranslate()">新增内容</button>
   </div>
   <select id="tta_tgtsl" style="width: 113px;" aria-label="输出语言选择下拉菜单">
-    <option value="ar">阿拉伯语</option>
-    <option value="ga">爱尔兰语</option>
-    <option value="et">爱沙尼亚语</option>
-    <option value="bg">保加利亚语</option>
-    <option value="is">冰岛语</option>
-    <option value="pl">波兰语</option>
-    <option value="bs-Latn">波斯尼亚语(拉丁语)</option>
-    <option value="fa">波斯语</option>
-    <option value="da">丹麦语</option>
-    <option value="de">德语</option>
-    <option value="ru">俄语</option>
-    <option value="fr">法语</option>
-    <option value="zh-Hant">繁体中文</option>
-    <option value="fil">菲律宾语</option>
-    <option value="fj">斐济语</option>
-    <option value="fi">芬兰语</option>
-    <option value="ht">海地克里奥尔语</option>
-    <option value="ko">韩语</option>
-    <option value="nl">荷兰语</option>
-    <option value="ca">加泰罗尼亚语</option>
-    <option value="zh-Hans">简体中文</option>
-    <option value="cs">捷克语</option>
-    <option value="kn">卡纳达语</option>
-    <option value="otq">克雷塔罗奥托米语</option>
-    <option value="tlh">克林贡语</option>
-    <option value="hr">克罗地亚语</option>
-    <option value="lv">拉脱维亚语</option>
-    <option value="lt">立陶宛语</option>
-    <option value="ro">罗马尼亚语</option>
-    <option value="mg">马达加斯加语</option>
-    <option value="mt">马耳他语</option>
-    <option value="ml" selected="selected">马拉雅拉姆语</option>
-    <option value="ms">马来语(拉丁语)</option>
-    <option value="mi">毛利语</option>
-    <option value="bn-BD">孟加拉语</option>
-    <option value="mww">苗语</option>
-    <option value="af">南非荷兰语</option>
-    <option value="pa">旁遮普语(果鲁穆齐语)</option>
-    <option value="pt-br">葡萄牙语(巴西)</option>
-    <option value="pt-pt">葡萄牙语(葡萄牙)</option>
-    <option value="ja">日语</option>
-    <option value="sv">瑞典语</option>
-    <option value="sm">萨摩亚语</option>
-    <option value="sr-Latn">塞尔维亚语(拉丁语)</option>
-    <option value="sr-Cyrl">塞尔维亚语(西里尔文)</option>
-    <option value="nb">书面挪威语</option>
-    <option value="sk">斯洛伐克语</option>
-    <option value="sl">斯洛文尼亚语</option>
-    <option value="sw">斯瓦希里语</option>
-    <option value="ty">塔希提语</option>
-    <option value="te">泰卢固语</option>
-    <option value="ta">泰米尔语</option>
-    <option value="th">泰语</option>
-    <option value="to">汤加语</option>
-    <option value="tr">土耳其语</option>
-    <option value="cy">威尔士语</option>
-    <option value="ur">乌尔都语</option>
-    <option value="uk">乌克兰语</option>
-    <option value="es">西班牙语</option>
-    <option value="he">希伯来语</option>
-    <option value="el">希腊语</option>
-    <option value="hu">匈牙利语</option>
-    <option value="it">意大利语</option>
-    <option value="hi">印地语</option>
-    <option value="id">印度尼西亚语</option>
-    <option value="en">英语</option>
-    <option value="yua">尤卡坦玛雅语</option>
-    <option value="vi">越南语</option>
-    <option value="yue">粤语(繁体)</option>
+    <% @languages.each do |language| %>
+      <%
+        selected = ""
+        if language[:value] == params[:tl]
+          selected = "selected"
+        else
+          if language[:value] == 'en'
+            selected = "selected"
+          end
+        end
+      %>
+      <option value="<%=language[:value] %>" <%=selected %>><%=language[:name] %></option>
+      <%  %>
+    <% end %>
   </select>
   <input name="Query" type="button" value="翻译" onclick="trans_late();">
 
   <% if @results.present? %>
     <h3>翻译的结果为：</h3>
-    <% @results.each do |result| %>
-      <p class="notice"><%=result %></p>
+    <% @results.each_with_index do |result, index| %>
+      <p class="notice">第<%= index+1 %>次    <%= result %></p><br/>
     <% end %>
   <% end %>
 
   <p>
     <%= link_to '百度翻译', new_translate_path %>
     <%= link_to '返回', me_demos_path %>
+    <%= link_to '刷新', translates_path %>
   </p>
 </div>
 <script type="text/javascript">
-    function trans_late(){
-      let translateContents = [];
-      let tta = document.getElementsByTagName('textarea')
-      for(var i=0; i < tta.length; i++) {
-        if (tta[i].value) {
-            translateContents.push(tta[i].value);
+    function trans_late() {
+        let translateContents = [];
+        let tta = document.getElementsByTagName('textarea')
+        for (var i = 0; i < tta.length; i++) {
+            if (tta[i].value) {
+                translateContents.push(tta[i].value);
+            }
         }
-      }
-      window.location.href = "/translates/get_translate?q=" + translateContents.join("|") + "&tl=" + document.getElementById('tta_tgtsl').value;
+        // |, ||, ↵,0(ko), ↓，→，↕，ϟ，Φ
+        window.location.href = "/translates/get_translate?q=" + translateContents.join("✚") + "&tl=" + document.getElementById('tta_tgtsl').value;
     }
+
     function addTranslate() {
-      $(".translate-content").append('<textarea rows="5" cols="50" placeholder="请输入需要翻译的内容"></textarea>')
+        $(".translate-content").append('<textarea rows="5" cols="50" placeholder="请输入需要翻译的内容"></textarea>')
     }
 </script>
 
 <style>
-  textarea{
+  textarea {
     margin-left: 5px;
   }
 </style>

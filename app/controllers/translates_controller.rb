@@ -6,6 +6,8 @@ class TranslatesController < ApplicationController
   # GET /translates.json
   def index
     @translates = Translate.all
+    require 'translation_tool'
+    @languages = TranslationTool.new.option_list()
   end
 
   # GET /translates/1
@@ -49,7 +51,15 @@ class TranslatesController < ApplicationController
 
   def get_translate
     require 'translation_tool'
+    totaltimes = 1.5*1000
+    # (0..1000).each do |t|
     @results = TranslationTool.new.start_google(params[:q], params[:tl])
+    p "************"
+    p @results
+    p "************"
+      # sleep(2)
+    # end
+    @languages = TranslationTool.new.option_list()
     render :index
   end
 
